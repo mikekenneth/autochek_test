@@ -1,4 +1,4 @@
-# Problem 1
+# Problem 1: Extraction of Loans Status Report (SQL)
 As requested, we needed to extract a status reports for all the **Loans**.
 
 The report can be found [problem_1/loans_status_report-2023-Nov-11.xlsx]("problem_1/loans_status_report-2023-Nov-11.xlsx")
@@ -11,14 +11,14 @@ Here is an overview of the ER Diagram of the tables provided:
 ## Get Started
 To launch the instance for testing, you can follow the below steps:
 
-1 - Make sure you have [docker](https://www.docker.com/) & [docker-compose](https://docs.docker.com/compose/)  install, then the below command:
+1. Make sure you have [docker](https://www.docker.com/) & [docker-compose](https://docs.docker.com/compose/)  install, then the below command:
 ```bash
 docker-compose -f docker-compose-p1.yaml up
 ```
 
-2 - Next you can access the database on the below `localhost` port `5435`.
+2.  Next you can access the database on the below `localhost` port `5435` with the user & password as **`postgres`** (Unless changed in [docker-compose.yaml](docker-compose-p1.yaml)).
 
-3 - Run the query in your preferred PostgreSQL client.
+3. To facilitate the extraction the report, I created a `view` with the [query](problem_1/sql/solution.sql). Run the below query in your preferred PostgreSQL client to get the report:
 ```sql
 select *
 from view_loans_status_report;
@@ -77,7 +77,6 @@ left join lp_data lp on lp.loan_id = loans.loan_id
 left join borrowers on borrowers.borrower_id = loans.borrower_id
 ```
 
-
 ## Observations:
 - **The table `missing_payments` is not in the document**. I created the report without it.
 - The below columns were not in the document & data provided:
@@ -87,3 +86,42 @@ left join borrowers on borrowers.borrower_id = loans.borrower_id
   borrower_name  
   ```
 - The `borrower_credit_score` for the second borrower is the letter `a`. Maybe a typo.
+
+
+# Problem 2: Script that Pull data from XE API (Python):
+The opjective is to pull Currency Exchange rates twice a day from XE API. 
+
+I used [Apache Airflow](https://airflow.apache.org) to schedule the pipeline.
+
+Here is an overview of the pipeline:
+
+![ER Diagram](docs/problem2-Aiflow_Pipeline.png)
+
+## Get Started
+To launch the instance for testing, you can follow the below steps:
+
+1. We need to create and `.env` from [sample.env](./sample.env):
+```bash
+cp problem_2/sample.env problem_2/.env
+```
+2. Add the Xe API_ID & API_KEY in the `.env` file as below:
+```bash
+XE_API_ID=''
+XE_API_KEY=''
+```
+
+3. Make sure you have [docker](https://www.docker.com/) & [docker-compose](https://docs.docker.com/compose/)  install, then the below command:
+```bash
+docker-compose -f docker-compose-p2.yaml up
+```
+
+5. You can access the Apache airflow on this [link](http://localhost:8080) with the user & password as **`airflow`**.
+
+6. Next you can access the database on `localhost` port `5433` with the user & password as **`postgres`** 
+
+7. Run the below query in your preferred PostgreSQL client.
+```sql
+select *
+from xe_currency_exchanges_rates;
+```
+
