@@ -89,7 +89,7 @@ def store_data_to_db(data: dict) -> bool:
         f"('USD', '{v[1]}', '{v[0]}', '{k}')" for k, v in data.items()
     )
     query = f"""
-    INSERT INTO xe_currency_exchanges_rates (currency_from, usd_to_currency_rate, currency_to_usd_rate, currency_to)
+    INSERT INTO public.xe_currency_exchanges_rates (currency_from, usd_to_currency_rate, currency_to_usd_rate, currency_to)
         VALUES {insertion_values}
         ON CONFLICT(date_key, currency_to) 
 	DO UPDATE SET 

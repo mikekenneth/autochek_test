@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  autocheck_db:
+  autochek_db:
     image: postgres:15
     ports:
       - "5435:5432"

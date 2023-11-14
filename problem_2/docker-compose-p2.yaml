@@ -7,6 +7,7 @@ x-common: &common
     - .env
   volumes:
     - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs:rw
 
 x-depends-on: &depends-on
   depends_on:
@@ -16,7 +17,7 @@ x-depends-on: &depends-on
       condition: service_completed_successfully
 
 services:
-  autocheck_db:
+  autochek_db:
     env_file:
       - .env
     image: postgres:15
@@ -25,14 +26,12 @@ services:
     environment:
       - POSTGRES_USER=${AUTOCHEK_DB_USER:-postgres}
       - POSTGRES_PASSWORD=${AUTOCHEK_DB_PASSWORD:-postgres}
-    volumes:
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   postgres:
-    image: postgres:15
+    image: postgres:13
     container_name: postgres
     ports:
-      - "5432:5432"
+      - "5435:5432"
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "airflow" ]
       interval: 5s
@@ -48,6 +47,17 @@ services:
     restart: on-failure
     ports:
       - "8793:8793"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"'
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    env_file:
+      - .env
 
   webserver:
     <<: *common

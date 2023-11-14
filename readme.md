@@ -119,11 +119,18 @@ docker-compose -f docker-compose-p2.yaml up
 
 5. You can access the Apache airflow on this [link](http://localhost:8080) with the user & password as **`airflow`**.
 
-6. Next you can access the database on `localhost` port `5433` with the user & password as **`postgres`** and select database **`autochek_db`**
+6. Create a new Postgres connection with the id as **`autochek_db`** (will be used to store the currency data results) as below:
+![autochek_db connection](docs/problem2-db_connection_creation.png)
 
-7. Run the below query in your preferred PostgreSQL client.
+7. Go to the Dags interface and enable the `currency_exchange_rates` DAG:
+![enable DAG](docs/currency_dag_enable.png)
+
+8. Next you can access the database on `localhost` port `5433` with the user & password as **`postgres`** and select database **`postgres`**
+
+9. Run the below query in your preferred PostgreSQL client to get the rates in the designated format.
 ```sql
 select *
 from xe_currency_exchanges_rates;
 ```
+![currency data](docs/currency_result.png)
 
