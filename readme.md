@@ -13,10 +13,11 @@ To launch the instance for testing, you can follow the below steps:
 
 1. Make sure you have [docker](https://www.docker.com/) & [docker-compose](https://docs.docker.com/compose/)  install, then the below command:
 ```bash
+cd problem_1
 docker-compose -f docker-compose-p1.yaml up
 ```
 
-2.  Next you can access the database on the below `localhost` port `5435` with the user & password as **`postgres`** (Unless changed in [docker-compose.yaml](docker-compose-p1.yaml)).
+2.  Next you can access the database on the below `localhost` port `5435` with the user & password as **`postgres`** (Unless changed in [docker-compose.yaml](docker-compose-p1.yaml)) and select database **`autochek_db`**.
 
 3. To facilitate the extraction the report, I created a `view` with the [query](problem_1/sql/solution.sql). Run the below query in your preferred PostgreSQL client to get the report:
 ```sql
@@ -112,12 +113,13 @@ XE_API_KEY=''
 
 3. Make sure you have [docker](https://www.docker.com/) & [docker-compose](https://docs.docker.com/compose/)  install, then the below command:
 ```bash
+cd problem_2
 docker-compose -f docker-compose-p2.yaml up
 ```
 
 5. You can access the Apache airflow on this [link](http://localhost:8080) with the user & password as **`airflow`**.
 
-6. Next you can access the database on `localhost` port `5433` with the user & password as **`postgres`** 
+6. Next you can access the database on `localhost` port `5433` with the user & password as **`postgres`** and select database **`autochek_db`**
 
 7. Run the below query in your preferred PostgreSQL client.
 ```sql

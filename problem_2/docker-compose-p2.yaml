@@ -1,12 +1,12 @@
-version: '3.4'
+version: '3.7'
 
 x-common: &common
-  image: apache/airflow:2.7.0
+  image: apache/airflow:2.5.0
   user: "${AIRFLOW_UID}:0"
   env_file:
-    - ./problem_2/.env
+    - .env
   volumes:
-    - ./app/dags:/opt/airflow/dags
+    - ./dags:/opt/airflow/dags
 
 x-depends-on: &depends-on
   depends_on:
@@ -18,7 +18,7 @@ x-depends-on: &depends-on
 services:
   autocheck_db:
     env_file:
-      - ./problem_2/.env
+      - .env
     image: postgres:15
     ports:
       - "5433:5432"
@@ -26,7 +26,7 @@ services:
       - POSTGRES_USER=${AUTOCHEK_DB_USER:-postgres}
       - POSTGRES_PASSWORD=${AUTOCHEK_DB_PASSWORD:-postgres}
     volumes:
-      - ./problem_2/sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   postgres:
     image: postgres:15

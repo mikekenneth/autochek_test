@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  autocheck_db:
+    image: postgres:15
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data:/raw_data:ro
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/load_tables.sql:/docker-entrypoint-initdb.d/load_tables.sql
+      - ./sql/solution.sql:/docker-entrypoint-initdb.d/solution.sql
